@@ -1,0 +1,16 @@
+@import 'tailwindcss';
+
+/* Linear scale */
+@import './spacing.css'; /* Spacing */
+@import './radius.css'; /* Border Radius */
+@import './breakpoints.css'; /* Breakpoints & Containers */
+@import './typography.css'; /* Font Size, Weight */
+
+/* Config */
+@import './root.css'; /* Root */
+@import './colors.css'; /* Colors & Theme */
+@import './custom.css'; /* Custom */
+
+/* Plugins */
+@plugin "@tailwindcss/forms";
+/* @plugin "@tailwindcss/typography"; */
