@@ -1,0 +1,36 @@
+/* Set foreground and background colors with browser theme preference */
+
+:root {
+  --background: #fff;
+  --foreground: #000;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #000;
+    --foreground: #fff;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* This removes all default tailwind colors and sets only the primitives */
+
+@theme {
+  --color-*: initial;
+  --color-white: #fff;
+  --color-black: #000;
+  --color-red: #ff0000;
+  --color-green: #00ff00;
+  --color-blue: #0000ff;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-primary: var(--color-red);
+  --color-secondary: var(--color-blue);
+  --color-tertiary: var(--color-green);
+}
