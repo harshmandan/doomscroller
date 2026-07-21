@@ -1,11 +1,14 @@
 @theme {
   --breakpoint-*: initial;
 
-  --breakpoint-640: calc(var(--spacing-scale) * 640);
-  --breakpoint-768: calc(var(--spacing-scale) * 768);
-  --breakpoint-1024: calc(var(--spacing-scale) * 1024);
-  --breakpoint-1280: calc(var(--spacing-scale) * 1280);
-  --breakpoint-1536: calc(var(--spacing-scale) * 1536);
+  /* Static values (= --spacing-scale 0.0625em × N). Media-query conditions can't resolve
+     var()/calc(), so these must be literal — otherwise the breakpoints never match and
+     lightningcss fails to build. */
+  --breakpoint-640: 40em;
+  --breakpoint-768: 48em;
+  --breakpoint-1024: 64em;
+  --breakpoint-1280: 80em;
+  --breakpoint-1536: 96em;
 
   --container-*: initial;
 
