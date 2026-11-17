@@ -2,6 +2,7 @@
 	import { onMount, tick } from 'svelte';
 	import { browser } from '$app/environment';
 	import { afterNavigate, replaceState } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import EndSlide from '$lib/components/EndSlide.svelte';
 	import MuteButton from '$lib/components/MuteButton.svelte';
 	import Placeholder from '$lib/components/Placeholder.svelte';
@@ -71,7 +72,7 @@
 
 	$effect(() => {
 		if (!browser || !routerReady || currentIndex >= feed.length) return;
-		const url = `/${currentIndex + 1}`;
+		const url = resolve('/[[id]]', { id: String(currentIndex + 1) });
 		if (url !== window.location.pathname) {
 			try {
 				replaceState(url, {});
