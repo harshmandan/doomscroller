@@ -1,4 +1,5 @@
-import { generateFeed } from '$lib/feed';
+import { error } from '@sveltejs/kit';
+import { loadFeed } from '$lib/feed';
 import type { PageLoad } from './$types';
 
 export const ssr = false;
@@ -7,8 +8,8 @@ export const ssr = false;
 // Deep links like /5 are handled client-side via the 404.html fallback.
 export const prerender = true;
 
-export const load: PageLoad = ({ params }) => {
-	const feed = generateFeed();
+export const load: PageLoad = async ({ params, fetch }) => {
+	const feed = await loadFeed(fetch).catch(() => error(503, 'Could not load the video feed'));
 	const parsed = params.id ? parseInt(params.id, 10) : 1;
 	const safe = Number.isFinite(parsed) ? parsed : 1;
 	const initialIndex = Math.min(Math.max(0, safe - 1), feed.length - 1);
