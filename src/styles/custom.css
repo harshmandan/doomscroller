@@ -19,3 +19,77 @@ body {
   height: 100%;
   margin: 0;
 }
+
+/* Feed tile: shrinks with round corners while it scrolls, full size when snapped.
+   Driven by the tile's own position in the feed, so it needs no JS.
+   The settings panel sets --tile-in-scale, --tile-out-scale, --tile-radius and
+   --tile-zoom-distance on the feed element. */
+
+/* Two animations cannot share `scale`: the later one would win outright.
+   Each drives its own registered property and the tile multiplies them. */
+
+@property --tile-in {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 1;
+}
+
+@property --tile-out {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 1;
+}
+
+@property --tile-in-radius {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --tile-out-radius {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
+@keyframes tile-in {
+  from {
+    --tile-in: var(--tile-in-scale, 0.9);
+    --tile-in-radius: var(--tile-radius, 28px);
+  }
+
+  to {
+    --tile-in: 1;
+    --tile-in-radius: 0px;
+  }
+}
+
+@keyframes tile-out {
+  from {
+    --tile-out: 1;
+    --tile-out-radius: 0px;
+  }
+
+  to {
+    --tile-out: var(--tile-out-scale, 0.9);
+    --tile-out-radius: var(--tile-radius, 28px);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .tile-zoom {
+      overflow: clip;
+      scale: calc(var(--tile-in) * var(--tile-out));
+      border-radius: max(var(--tile-in-radius), var(--tile-out-radius));
+      animation:
+        tile-in linear both,
+        tile-out linear both;
+      /* these must come after `animation`, which resets them */
+      animation-timeline: view(block), view(block);
+      animation-range:
+        entry calc(100% - var(--tile-zoom-distance, 30%)) entry 100%,
+        exit 0% exit var(--tile-zoom-distance, 30%);
+    }
+  }
+}
